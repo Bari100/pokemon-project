@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { FC, MouseEventHandler } from 'react'
+import { ItemData } from '@types'
 
-export default function ListItem({ data, onClick }) {
+const ListItem: FC<Props> = ({ data, onClick }) => {
   const { title, text1, text2, text3, imageUrl, imageAlt } = data
 
   return (
@@ -24,4 +25,11 @@ export default function ListItem({ data, onClick }) {
       </div>
     </li>
   )
+}
+
+export default ListItem
+
+interface Props {
+  data: ItemData
+  onClick: MouseEventHandler<HTMLLIElement>
 }

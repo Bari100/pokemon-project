@@ -10,3 +10,14 @@ export interface PokemonsData {
   lgAvatarUrl: string | null
   avatarAlt: string
 }
+
+export interface ItemData {
+  title?: string
+  text1?: string | number
+  text2?: string | number
+  text3?: string | number
+  text4?: string | number
+  text5?: string | number
+  imageUrl?: string
+  imageAlt?: string
+}

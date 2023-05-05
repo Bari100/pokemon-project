@@ -1,7 +1,7 @@
-import { Fragment } from 'react'
+import { FC, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
-export default function Dropdown({ title, items }) {
+const Dropdown: FC<Props> = ({ title, items }) => {
   return (
     <Menu as='div' className='relative inline-block text-left mb-10'>
       <div>
@@ -26,4 +26,11 @@ export default function Dropdown({ title, items }) {
       </Transition>
     </Menu>
   )
+}
+
+export default Dropdown
+
+interface Props {
+  title: string
+  items: JSX.Element[]
 }

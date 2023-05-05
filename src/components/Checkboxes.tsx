@@ -1,3 +1,4 @@
+import { Dispatch, FC, SetStateAction } from 'react'
 import Checkbox from './Checkbox'
 
 const pokemonTypes = [
@@ -55,7 +56,7 @@ const pokemonTypes = [
   },
 ]
 
-const Checkboxes = ({ setTypes }) => {
+const Checkboxes: FC<Props> = ({ setTypes }) => {
   return (
     <div className='flex flex-wrap gap-2 mb-10'>
       {pokemonTypes.map(({ type, color }) => (
@@ -66,3 +67,7 @@ const Checkboxes = ({ setTypes }) => {
 }
 
 export default Checkboxes
+
+interface Props {
+  setTypes: Dispatch<SetStateAction<string[]>>
+}

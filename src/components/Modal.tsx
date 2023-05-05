@@ -1,22 +1,9 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-import { Fragment } from 'react'
+import { Dispatch, FC, Fragment, SetStateAction } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ReactComponent as XMarkIcon } from '@assets/xMarkIcon.svg'
+import { ItemData } from '@types'
 
-export default function Modal({ data, open, setOpen }) {
+const Modal: FC<Props> = ({ data, open, setOpen }) => {
   const { title, text1, text2, text3, text4, text5, imageUrl, imageAlt } = data
 
   return (
@@ -84,4 +71,12 @@ export default function Modal({ data, open, setOpen }) {
       </Dialog>
     </Transition.Root>
   )
+}
+
+export default Modal
+
+interface Props {
+  data: ItemData
+  setOpen: Dispatch<SetStateAction<boolean>>
+  open: boolean
 }

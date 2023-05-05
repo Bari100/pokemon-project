@@ -16,7 +16,7 @@ const dropDownOptions = [10, 20, 50]
 
 function App() {
   const [open, setOpen] = useState(false)
-  const [types, setTypes] = useState([])
+  const [types, setTypes] = useState<string[]>([])
   const [id, setId] = useState<number | null>(null)
   const [offset, setOffset] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(10)

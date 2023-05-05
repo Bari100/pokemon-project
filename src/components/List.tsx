@@ -1,4 +1,6 @@
-export default function List({ children }) {
+import { FC, ReactNode } from 'react'
+
+const List: FC<Props> = ({ children }) => {
   return (
     <>
       <ul role='list' className='divide-y divide-gray-100'>
@@ -6,4 +8,10 @@ export default function List({ children }) {
       </ul>
     </>
   )
+}
+
+export default List
+
+interface Props {
+  children: ReactNode
 }
