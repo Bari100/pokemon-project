@@ -65,10 +65,10 @@ function App() {
         value={searchValue}
         placeholder='find pokemon by name'
         onChange={handleSearch}
+        className='bg-white text-blue-800 border-2 border-cyan-600 mb-10'
       />
       <Checkboxes setTypes={setTypes} />
       <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`} items={dropdownItems} />
-      {/* <List items={!debouncedSlicedIds.length ? initialIds : debouncedSlicedIds} listItem={(item) =>  */}
       <List>
         {pokemons?.map((pokemonData: PokemonsData) => {
           const { id, name, pokemonTypes, height, baseExperience, smAvatarUrl, avatarAlt } = pokemonData
@@ -93,16 +93,15 @@ function App() {
         {open && <ModalWrapper id={id} setOpen={setOpen} open={open} data={pokemons} />}
       </List>
       <ReactPaginate
-        breakLabel='...'
-        nextLabel='next'
+        breakLabel='..'
+        nextLabel='>'
         onPageChange={handlePaginationChange}
-        pageRangeDisplayed={5}
+        pageRangeDisplayed={2}
         pageCount={totalNumberOfPages || 0}
-        previousLabel='previous'
+        previousLabel='<'
         renderOnZeroPageCount={null}
         activeClassName='bg-black'
-        containerClassName='flex justify-center gap-4 m-auto w-20'
-        pageClassName='w-40'
+        containerClassName='flex justify-center gap-1 m-auto'
       />
     </>
   )

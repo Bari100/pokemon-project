@@ -57,7 +57,7 @@ const pokemonTypes = [
 
 const Checkboxes = ({ setTypes }) => {
   return (
-    <div className='flex flex-wrap gap-2'>
+    <div className='flex flex-wrap gap-2 mb-10'>
       {pokemonTypes.map(({ type, color }) => (
         <Checkbox type={type} color={color} setTypes={setTypes} />
       ))}
