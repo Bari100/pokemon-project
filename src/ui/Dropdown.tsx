@@ -1,7 +1,7 @@
-import { FC, Fragment } from 'react'
+import { FC, Fragment, ReactNode } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
-const Dropdown: FC<Props> = ({ title, items }) => {
+const Dropdown: FC<Props> = ({ title, children }) => {
   return (
     <Menu as='div' className='relative inline-block text-left mb-10'>
       <div>
@@ -21,7 +21,7 @@ const Dropdown: FC<Props> = ({ title, items }) => {
         leaveTo='transform opacity-0 scale-95'
       >
         <Menu.Items className='absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-          <div className='py-1'>{items}</div>
+          <div className='py-1'>{children}</div>
         </Menu.Items>
       </Transition>
     </Menu>
@@ -32,5 +32,5 @@ export default Dropdown
 
 interface Props {
   title: string
-  items: JSX.Element[]
+  children: ReactNode
 }

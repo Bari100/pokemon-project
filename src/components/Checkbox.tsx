@@ -1,5 +1,5 @@
-import { useCheckboxState } from 'pretty-checkbox-react'
 import { Dispatch, FC, SetStateAction } from 'react'
+import { useCheckboxState } from 'pretty-checkbox-react'
 
 const Checkbox: FC<Props> = ({ type, color, setTypes }) => {
   const { state, setState } = useCheckboxState()

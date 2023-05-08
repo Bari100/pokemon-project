@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler } from 'react'
+import React, { FC, HTMLAttributes } from 'react'
 import { ItemData } from '@types'
 
 const ListItem: FC<Props> = ({ data, onClick }) => {
@@ -29,7 +29,6 @@ const ListItem: FC<Props> = ({ data, onClick }) => {
 
 export default ListItem
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLLIElement> {
   data: ItemData
-  onClick: MouseEventHandler<HTMLLIElement>
 }

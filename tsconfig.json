@@ -8,10 +8,12 @@
     "baseUrl": "./",
     "paths": { 
       "@components/*": ["src/components/*"],
+      "@ui/*": ["src/ui/*"],
       "@assets/*": ["src/assets/*"],
       "@redux/*": ["src/redux/*"],
       "@types": ["src/types.ts"],
       "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"],
     },
     "checkJs": false,
     "allowJs": true,

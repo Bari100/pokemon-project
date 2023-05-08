@@ -1,7 +1,7 @@
 import { Dispatch, FC, Fragment, SetStateAction } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ReactComponent as XMarkIcon } from '@assets/xMarkIcon.svg'
 import { ItemData } from '@types'
+import { ReactComponent as XMarkIcon } from '@assets/xMarkIcon.svg'
 
 const Modal: FC<Props> = ({ data, open, setOpen }) => {
   const { title, text1, text2, text3, text4, text5, imageUrl, imageAlt } = data

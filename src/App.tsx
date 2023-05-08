@@ -1,14 +1,16 @@
-import { useState, ChangeEvent } from 'react'
-import ReactPaginate from 'react-paginate'
-import { Menu } from '@headlessui/react'
+import { useState } from 'react'
 import { useGetPokemonsQuery } from '@redux/services/pokemonApi'
-import { PokemonsData } from '@types'
-import List from '@components/List'
+import { ItemData } from '@types'
 import ModalWrapper from '@components/ModalWrapper'
-import Dropdown from '@components/Dropdown'
-import useDebounce from '@hooks/useDebounce'
-import ListItem from '@components/ListItem'
 import Checkboxes from '@components/Checkboxes'
+import ListItemsWrapper from '@components/ListItemsWrapper'
+import Pagination from '@components/Pagination'
+import List from '@ui/List'
+import Dropdown from '@ui/Dropdown'
+import ListItem from '@ui/ListItem'
+import Modal from '@ui/Modal'
+import DropdownItems from '@ui/DropdownItems'
+import Search from '@ui/Search'
 import './App.css'
 
 const pokemonsFullAmount = 1281
@@ -16,92 +18,56 @@ const dropDownOptions = [10, 20, 50]
 
 function App() {
   const [open, setOpen] = useState(false)
-  const [types, setTypes] = useState<string[]>([])
+  const [pokemonTypes, setPokemonTypes] = useState<string[]>([])
   const [id, setId] = useState<number | null>(null)
   const [offset, setOffset] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchValue, setSearchValue] = useState('')
-  const debouncedSearchValue = useDebounce<string>(searchValue, 1000)
   const { data, isLoading } = useGetPokemonsQuery({
     offset: offset.toString(),
     limit: itemsPerPage.toString(),
-    types,
-    searchValue: debouncedSearchValue,
+    types: pokemonTypes,
+    searchValue: searchValue,
   })
 
   if (isLoading) return null
+
   const { pokemons, totalNumberOfPages, pokemonsAmount } = data || {}
-
-  const handlePaginationChange = (event: { selected: number }) => {
-    const newOffset = (event.selected * itemsPerPage) % (pokemonsAmount || pokemonsFullAmount)
-    setOffset(newOffset)
-  }
-
-  const dropdownItems = dropDownOptions.map(option => (
-    <Menu.Item>
-      <button
-        onClick={() => {
-          setItemsPerPage(option)
-          setOffset(0)
-        }}
-        className='bg-gray-100 text-gray-900 block px-4 py-2 text-sm w-full'
-      >
-        {option}
-      </button>
-    </Menu.Item>
-  ))
-
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    const { value } = e.target
-    setSearchValue(value)
-  }
 
   return (
     <>
-      <input
-        type='search'
-        name='search'
-        value={searchValue}
-        placeholder='find pokemon by name'
-        onChange={handleSearch}
-        className='bg-white text-blue-800 border-2 border-cyan-600 mb-10'
-      />
-      <Checkboxes setTypes={setTypes} />
-      <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`} items={dropdownItems} />
+      <Search setSearchValue={setSearchValue} placeholder='find pokemon by name' delay={1000} />
+      <Checkboxes setTypes={setPokemonTypes} />
+      <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`}>
+        <DropdownItems
+          dropDownOptions={dropDownOptions}
+          onClick={option => {
+            setItemsPerPage(option as number)
+            setOffset(0)
+          }}
+        />
+      </Dropdown>
       <List>
-        {pokemons?.map((pokemonData: PokemonsData) => {
-          const { id, name, pokemonTypes, height, baseExperience, smAvatarUrl, avatarAlt } = pokemonData
-          const listData = {
-            title: name,
-            text1: pokemonTypes,
-            text2: height,
-            text3: baseExperience,
-            imageUrl: smAvatarUrl,
-            imageAlt: avatarAlt,
-          }
-          return (
+        <ListItemsWrapper pokemonsData={pokemons}>
+          {(data, id) => (
             <ListItem
-              data={listData}
+              data={data}
               onClick={() => {
                 setOpen(true)
                 setId(id)
               }}
             />
-          )
-        })}
-        {open && <ModalWrapper id={id} setOpen={setOpen} open={open} data={pokemons} />}
+          )}
+        </ListItemsWrapper>
       </List>
-      <ReactPaginate
-        breakLabel='..'
-        nextLabel='>'
-        onPageChange={handlePaginationChange}
-        pageRangeDisplayed={2}
-        pageCount={totalNumberOfPages || 0}
-        previousLabel='<'
-        renderOnZeroPageCount={null}
-        activeClassName='bg-black'
-        containerClassName='flex justify-center gap-1 m-auto'
+      <ModalWrapper id={id} pokemonsData={pokemons}>
+        {(data: ItemData) => <Modal setOpen={setOpen} open={open} data={data} />}
+      </ModalWrapper>
+      <Pagination
+        setOffset={setOffset}
+        itemsPerPage={itemsPerPage}
+        itemsAmount={pokemonsAmount || pokemonsFullAmount}
+        totalNumberOfPages={totalNumberOfPages || 0}
       />
     </>
   )

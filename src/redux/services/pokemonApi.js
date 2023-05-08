@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { findByString } from '../../utils/findByString'
+import { findByString } from '@utils/findByString'
 
 const POKEAPI = 'https://pokeapi.co/api/v2/'
 

@@ -1,10 +1,9 @@
-import { Dispatch, FC, SetStateAction } from 'react'
-import Modal from './Modal'
-import { PokemonsData } from '@types'
+import { FC, ReactElement } from 'react'
+import { PokemonsData, ItemData } from '@types'
 
-const ModalWrapper: FC<Props> = ({ id, setOpen, open, data }) => {
+const ModalWrapper: FC<Props> = ({ id, pokemonsData, children }) => {
   const getPokemonById = (id: number) => {
-    return data?.find(pokemon => pokemon.id === id)
+    return pokemonsData?.find(pokemon => pokemon.id === id)
   }
 
   const { name, pokemonTypes, pokemonAbilities, height, weight, baseExperience, lgAvatarUrl, avatarAlt } =
@@ -21,14 +20,13 @@ const ModalWrapper: FC<Props> = ({ id, setOpen, open, data }) => {
     imageAlt: avatarAlt,
   }
 
-  return <Modal setOpen={setOpen} open={open} data={modalData} />
+  return children(modalData)
 }
 
 export default ModalWrapper
 
 interface Props {
   id: number | null
-  setOpen: Dispatch<SetStateAction<boolean>>
-  open: boolean
-  data?: PokemonsData[]
+  pokemonsData?: PokemonsData[]
+  children(data: ItemData): ReactElement
 }
