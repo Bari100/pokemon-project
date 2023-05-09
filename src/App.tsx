@@ -36,7 +36,7 @@ function App() {
 
   return (
     <>
-      <Search setSearchValue={setSearchValue} placeholder='find pokemon by name' delay={1000} />
+      <Search setSearchValue={setSearchValue} placeholder='Find pokemons by name' delay={1000} />
       <Checkboxes setTypes={setPokemonTypes} />
       <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`}>
         <DropdownItems
