@@ -1,8 +1,7 @@
-import { Dispatch, FC, SetStateAction } from 'react'
-import { useCheckboxState } from 'pretty-checkbox-react'
+import { FC, useState } from 'react'
 
 const Checkbox: FC<Props> = ({ value, color, onClick }) => {
-  const { state: checked, setState: setChecked } = useCheckboxState() as UseCheckboxState
+  const [checked, setChecked] = useState(false)
 
   return (
     <div
@@ -26,9 +25,4 @@ interface Props {
   value: string
   color: string
   onClick: (checked?: boolean) => void
-}
-
-interface UseCheckboxState {
-  state: boolean
-  setState: Dispatch<SetStateAction<boolean>>
 }

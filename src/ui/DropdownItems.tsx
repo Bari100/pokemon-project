@@ -16,6 +16,6 @@ const DropdownItems: FC<Props> = ({ dropDownOptions, onClick }) => (
 export default DropdownItems
 
 interface Props {
-  dropDownOptions: string[] | number[]
+  dropDownOptions: readonly string[] | readonly number[]
   onClick: (option: number | string) => void
 }

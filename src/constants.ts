@@ -1,4 +1,8 @@
-export const pokemonTypes = [
+export const POKEMONS_FULL_AMOUNT = 1281
+
+export const DROPDOWN_OPTIONS = [10, 20, 50] as const
+
+export const POKEMON_TYPES = [
   {
     type: 'normal',
     color: 'bg-[#d9d9d9]',
@@ -67,4 +71,4 @@ export const pokemonTypes = [
     type: 'fairy',
     color: 'bg-[#b82bff]',
   },
-]
+] as const

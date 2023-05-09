@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useGetPokemonsQuery } from '@redux/services/pokemonApi'
 import { ItemData } from '@types'
+import { DROPDOWN_OPTIONS, POKEMONS_FULL_AMOUNT } from './constants'
 import ModalWrapper from '@components/ModalWrapper'
 import Checkboxes from '@components/Checkboxes'
 import ListItemsWrapper from '@components/ListItemsWrapper'
-import Pagination from '@components/Pagination'
+import PaginationWrapper from '@components/PaginationWrapper'
 import List from '@ui/List'
 import Dropdown from '@ui/Dropdown'
 import ListItem from '@ui/ListItem'
@@ -13,9 +14,6 @@ import DropdownItems from '@ui/DropdownItems'
 import Search from '@ui/Search'
 import './App.css'
 
-const pokemonsFullAmount = 1281
-const dropDownOptions = [10, 20, 50]
-
 function App() {
   const [open, setOpen] = useState(false)
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([])
@@ -23,6 +21,11 @@ function App() {
   const [offset, setOffset] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchValue, setSearchValue] = useState('')
+  const [pageIndex, setPageIndex] = useState({ pageIndex: 0 })
+  const setForcePage = (index: number) => {
+    setOffset(index)
+    setPageIndex({ pageIndex: index })
+  }
   const { data, isLoading } = useGetPokemonsQuery({
     offset: offset.toString(),
     limit: itemsPerPage.toString(),
@@ -36,14 +39,21 @@ function App() {
 
   return (
     <>
-      <Search setSearchValue={setSearchValue} placeholder='Find pokemons by name' delay={1000} />
-      <Checkboxes setTypes={setPokemonTypes} />
+      <Search
+        setSearchValue={setSearchValue}
+        onChange={() => {
+          setForcePage(0)
+        }}
+        placeholder='Find pokemons by name'
+        delay={1000}
+      />
+      <Checkboxes setTypes={setPokemonTypes} setForcePage={setForcePage} />
       <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`}>
         <DropdownItems
-          dropDownOptions={dropDownOptions}
+          dropDownOptions={DROPDOWN_OPTIONS}
           onClick={option => {
             setItemsPerPage(option as number)
-            setOffset(0)
+            setForcePage(0)
           }}
         />
       </Dropdown>
@@ -63,11 +73,12 @@ function App() {
       <ModalWrapper id={id} pokemonsData={pokemons}>
         {(data: ItemData) => <Modal setOpen={setOpen} open={open} data={data} />}
       </ModalWrapper>
-      <Pagination
+      <PaginationWrapper
         setOffset={setOffset}
         itemsPerPage={itemsPerPage}
-        itemsAmount={pokemonsAmount || pokemonsFullAmount}
+        itemsAmount={pokemonsAmount || POKEMONS_FULL_AMOUNT}
         totalNumberOfPages={totalNumberOfPages || 0}
+        forcePage={pageIndex}
       />
     </>
   )
