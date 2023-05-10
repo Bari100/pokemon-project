@@ -12,7 +12,9 @@ import ListItem from '@ui/ListItem'
 import Modal from '@ui/Modal'
 import DropdownItems from '@ui/DropdownItems'
 import Search from '@ui/Search'
+import Loader from '@ui/Loader'
 import './App.css'
+import { useAppSelector } from '@redux/hooks'
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -26,26 +28,26 @@ function App() {
     setOffset(index)
     setPageIndex({ pageIndex: index })
   }
-  const { data, isLoading } = useGetPokemonsQuery({
+  const { data } = useGetPokemonsQuery({
     offset: offset.toString(),
     limit: itemsPerPage.toString(),
     types: pokemonTypes,
     searchValue: searchValue,
   })
 
-  if (isLoading) return null
+  const { loading } = useAppSelector(state => state.pokemonsStatus) || {}
 
   const { pokemons, totalNumberOfPages, pokemonsAmount } = data || {}
 
   return (
     <>
+      {loading && <Loader />}
       <Search
         setSearchValue={setSearchValue}
         onChange={() => {
           setForcePage(0)
         }}
         placeholder='Find pokemons by name'
-        delay={1000}
       />
       <Checkboxes setTypes={setPokemonTypes} setForcePage={setForcePage} />
       <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`}>

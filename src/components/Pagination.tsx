@@ -16,7 +16,8 @@ const Button: FC<ButtonProps> = ({ content, onClick, active }) => {
 const PaginationNav: FC<PaginationNavProps> = ({ gotoPage, pageCount, pageIndex }) => {
   const lastPageIndex = pageCount - 1
   const penultPageIndex = pageCount - 2
-  const pageIndexIsNot = (pageIndex: number, ...indexes: number[]) => indexes.every(index => pageIndex !== index)
+  const pageIndexIsNot = (...indexes: number[]) => indexes.every(index => pageIndex !== index)
+  const pageCountIsNot = (length: number) => pageCount !== length
   const renderPageLinks = useCallback(() => {
     if (pageCount === 0) return null
     const visiblePageButtonCount = 3
@@ -45,18 +46,18 @@ const PaginationNav: FC<PaginationNavProps> = ({ gotoPage, pageCount, pageIndex 
 
   return (
     <ul className='flex gap-2'>
-      {pageIndexIsNot(pageIndex, 0, 1) && (
+      {pageIndexIsNot(0, 1) && pageCountIsNot(3) && (
         <>
           <li>
             <Button content={1} onClick={() => gotoPage(0)} />
           </li>
-          {pageIndexIsNot(pageIndex, 2) && <li className='text-red-300'>...</li>}
+          {pageIndexIsNot(2) && pageCountIsNot(4) && <li className='text-red-300'>...</li>}
         </>
       )}
       {renderPageLinks()}
-      {pageIndexIsNot(pageIndex, lastPageIndex, penultPageIndex) && (
+      {pageIndexIsNot(lastPageIndex, penultPageIndex) && pageCountIsNot(3) && (
         <>
-          {pageIndexIsNot(pageIndex, penultPageIndex - 1) && <li className='text-red-300'>...</li>}
+          {pageIndexIsNot(penultPageIndex - 1) && pageCountIsNot(4) && <li className='text-red-300'>...</li>}
           <li>
             <Button content={pageCount} onClick={() => gotoPage(pageCount - 1)} />
           </li>

@@ -71,4 +71,8 @@ export const POKEMON_TYPES = [
     type: 'fairy',
     color: 'bg-[#b82bff]',
   },
+  {
+    type: 'dark',
+    color: 'bg-[#491b60]',
+  },
 ] as const

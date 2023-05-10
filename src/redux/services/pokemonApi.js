@@ -1,3 +1,4 @@
+import { pokemonsError, pokemonsPending, pokemonsSuccess } from '@redux/features/pokemonsStatusSlice'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findByString } from '@utils/findByString'
 
@@ -99,7 +100,18 @@ export const pokemonApi = createApi({
           }
         })
 
-        return { data: { pokemons: transformedRes, totalNumberOfPages, pokemonsAmount } }
+        return {
+          data: { pokemons: transformedRes, totalNumberOfPages, pokemonsAmount },
+        }
+      },
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        dispatch(pokemonsPending())
+        try {
+          const { data: _ } = await queryFulfilled
+          dispatch(pokemonsSuccess())
+        } catch (err) {
+          dispatch(pokemonsError('Error fetching pokemons!'))
+        }
       },
     }),
   }),
