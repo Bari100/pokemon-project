@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useGetPokemonsQuery } from '@redux/services/pokemonApi'
-import { DROPDOWN_OPTIONS, POKEMONS_FULL_AMOUNT } from './constants'
+import { DROPDOWN_OPTIONS, FIRST_PAGE, POKEMONS_FULL_AMOUNT, ZERO_PAGES } from './constants'
 import Checkboxes from '@components/Checkboxes'
 import PaginationWrapper from '@components/PaginationWrapper'
 import Dropdown from '@ui/Dropdown'
@@ -10,23 +10,33 @@ import Loader from '@ui/Loader'
 import './App.css'
 import { useAppSelector } from '@redux/hooks'
 import PokemonsList from '@components/PokemonsList'
+import { ItemsPerPage } from '@types'
 
 function App() {
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([])
-  const [offset, setOffset] = useState(0)
-  const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [offset, setOffset] = useState(FIRST_PAGE)
+  const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(DROPDOWN_OPTIONS[0])
   const [searchValue, setSearchValue] = useState('')
-  const [pageIndex, setPageIndex] = useState({ pageIndex: 0 })
-  const setForcePage = (index: number) => {
+  const [pageIndex, setPageIndex] = useState({ pageIndex: FIRST_PAGE })
+  const setForcePage = useCallback((index: number) => {
     setOffset(index)
     setPageIndex({ pageIndex: index })
-  }
+  }, [])
   const { data } = useGetPokemonsQuery({
     offset: offset.toString(),
     limit: itemsPerPage.toString(),
     types: pokemonTypes,
     searchValue: searchValue,
   })
+
+  const handleSearchChange = useCallback(() => {
+    setForcePage(FIRST_PAGE)
+  }, [setForcePage])
+
+  const handleDropdownItemsClick = (option: ItemsPerPage) => {
+    setItemsPerPage(option)
+    setForcePage(FIRST_PAGE)
+  }
 
   const { loading } = useAppSelector(state => state.pokemonsStatus) || {}
 
@@ -35,21 +45,12 @@ function App() {
   return (
     <>
       {loading && <Loader />}
-      <Search
-        setSearchValue={setSearchValue}
-        onChange={() => {
-          setForcePage(0)
-        }}
-        placeholder='Find pokemons by name'
-      />
+      <Search setSearchValue={setSearchValue} onChange={handleSearchChange} placeholder='Find pokemons by name' />
       <Checkboxes setTypes={setPokemonTypes} setForcePage={setForcePage} />
       <Dropdown title={`pokemons to show on the page: ${itemsPerPage}`}>
         <DropdownItems
           dropDownOptions={DROPDOWN_OPTIONS}
-          onClick={option => {
-            setItemsPerPage(option as number)
-            setForcePage(0)
-          }}
+          onClick={handleDropdownItemsClick as (option: string | number) => void}
         />
       </Dropdown>
       <PokemonsList pokemons={pokemons} />
@@ -57,7 +58,7 @@ function App() {
         setOffset={setOffset}
         itemsPerPage={itemsPerPage}
         itemsAmount={pokemonsAmount || POKEMONS_FULL_AMOUNT}
-        totalNumberOfPages={totalNumberOfPages || 0}
+        totalNumberOfPages={totalNumberOfPages || ZERO_PAGES}
         forcePage={pageIndex}
       />
     </>

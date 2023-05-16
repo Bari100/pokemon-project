@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
+import React, { ChangeEvent, Dispatch, FC, SetStateAction, memo, useEffect, useState } from 'react'
 import useDebounce from '@hooks/useDebounce'
 
 const Search: FC<Props> = ({ setSearchValue, onChange, placeholder, delay = 500 }) => {
@@ -29,7 +29,7 @@ const Search: FC<Props> = ({ setSearchValue, onChange, placeholder, delay = 500 
   )
 }
 
-export default Search
+export default memo(Search)
 
 interface Props {
   setSearchValue: Dispatch<SetStateAction<string>>

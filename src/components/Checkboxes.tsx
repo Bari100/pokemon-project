@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction, memo } from 'react'
 import { POKEMON_TYPES } from 'src/constants'
 import Checkbox from '@ui/Checkbox'
 
@@ -22,7 +22,7 @@ const Checkboxes: FC<Props> = ({ setTypes, setForcePage }) => {
   )
 }
 
-export default Checkboxes
+export default memo(Checkboxes)
 
 interface Props {
   setTypes: Dispatch<SetStateAction<string[]>>

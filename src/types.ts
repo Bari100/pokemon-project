@@ -1,3 +1,5 @@
+import { DROPDOWN_OPTIONS } from './constants'
+
 export interface PokemonsData {
   id: number
   name: string
@@ -21,3 +23,7 @@ export interface ItemData {
   imageUrl?: string
   imageAlt?: string
 }
+
+export type TypesFromArrayValues<A extends readonly unknown[]> = A[number]
+
+export type ItemsPerPage = TypesFromArrayValues<typeof DROPDOWN_OPTIONS>

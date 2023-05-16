@@ -76,3 +76,7 @@ export const POKEMON_TYPES = [
     color: 'bg-[#491b60]',
   },
 ] as const
+
+export const FIRST_PAGE = 0
+
+export const ZERO_PAGES = 0
