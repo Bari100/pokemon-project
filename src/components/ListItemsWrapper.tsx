@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react'
+import { FC, Fragment, ReactElement } from 'react'
 import { PokemonsData, ItemData } from '@types'
 
 const ListItemsWrapper: FC<Props> = ({ pokemonsData, children }) => (
@@ -13,7 +13,7 @@ const ListItemsWrapper: FC<Props> = ({ pokemonsData, children }) => (
         imageUrl: smAvatarUrl,
         imageAlt: avatarAlt,
       }
-      return children(listData, id)
+      return <Fragment key={id}>{children(listData, id)}</Fragment>
     })}
   </>
 )

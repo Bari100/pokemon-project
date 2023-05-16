@@ -7,6 +7,7 @@ const Checkboxes: FC<Props> = ({ setTypes, setForcePage }) => {
     <div className='flex justify-center flex-wrap gap-2 mb-10'>
       {POKEMON_TYPES.map(({ type, color }) => (
         <Checkbox
+          key={type}
           value={type}
           color={color}
           onClick={checked => {

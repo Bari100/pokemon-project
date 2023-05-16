@@ -1,25 +1,18 @@
 import { useState } from 'react'
 import { useGetPokemonsQuery } from '@redux/services/pokemonApi'
-import { ItemData } from '@types'
 import { DROPDOWN_OPTIONS, POKEMONS_FULL_AMOUNT } from './constants'
-import ModalWrapper from '@components/ModalWrapper'
 import Checkboxes from '@components/Checkboxes'
-import ListItemsWrapper from '@components/ListItemsWrapper'
 import PaginationWrapper from '@components/PaginationWrapper'
-import List from '@ui/List'
 import Dropdown from '@ui/Dropdown'
-import ListItem from '@ui/ListItem'
-import Modal from '@ui/Modal'
 import DropdownItems from '@ui/DropdownItems'
 import Search from '@ui/Search'
 import Loader from '@ui/Loader'
 import './App.css'
 import { useAppSelector } from '@redux/hooks'
+import PokemonsList from '@components/PokemonsList'
 
 function App() {
-  const [open, setOpen] = useState(false)
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([])
-  const [id, setId] = useState<number | null>(null)
   const [offset, setOffset] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchValue, setSearchValue] = useState('')
@@ -59,22 +52,7 @@ function App() {
           }}
         />
       </Dropdown>
-      <List>
-        <ListItemsWrapper pokemonsData={pokemons}>
-          {(data, id) => (
-            <ListItem
-              data={data}
-              onClick={() => {
-                setOpen(true)
-                setId(id)
-              }}
-            />
-          )}
-        </ListItemsWrapper>
-      </List>
-      <ModalWrapper id={id} pokemonsData={pokemons}>
-        {(data: ItemData) => <Modal setOpen={setOpen} open={open} data={data} />}
-      </ModalWrapper>
+      <PokemonsList pokemons={pokemons} />
       <PaginationWrapper
         setOffset={setOffset}
         itemsPerPage={itemsPerPage}
